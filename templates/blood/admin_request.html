@@ -3,12 +3,24 @@
 <div class="dashboard-main pending-request-page">
     {% include "blood/login_cells.html" %}
     <div class="dashboard-content">
+        <nav class="admin-subnav-bar" aria-label="Blood request navigation">
+            <a href="{% url 'admin-request' %}" class="admin-subnav-pill active-blue">
+                <i class="fas fa-sync-alt"></i>
+                <span>Blood Requests</span>
+                {% if pending_blood_request_count %}<span class="pill-badge">{{ pending_blood_request_count }}</span>{% endif %}
+            </a>
+            <a href="{% url 'admin-request-history' %}" class="admin-subnav-pill">
+                <i class="fas fa-history"></i>
+                <span>Request History</span>
+            </a>
+        </nav>
+
         {% if message %}<div class="stock-alert" role="alert"><i class="fas fa-exclamation-triangle"></i><div><strong>Out of stock</strong><span>{{ message }}</span></div><button type="button" onclick="this.parentElement.remove()" aria-label="Close alert">&times;</button></div>{% endif %}
         <div class="dashboard-heading">
             <div>
                 <div class="dashboard-kicker">Needs attention</div>
-                <h1>Blood requested</h1>
-                <p>Review pending requests and keep urgent care moving.</p>
+                <h1>Blood Requests</h1>
+                <p>Review pending patient and donor requests and manage inventory approvals.</p>
             </div>
             <div class="dashboard-pulse request-pulse"><i class="fas fa-circle"></i> Awaiting review</div>
         </div>
