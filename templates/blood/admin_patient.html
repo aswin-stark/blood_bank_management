@@ -1,0 +1,45 @@
+{% extends 'blood/adminbase.html' %}
+{% load static %}
+{% block content %}
+<div class="dashboard-main patient-page">
+    {% include "blood/login_cells.html" %}
+    <div class="dashboard-content">
+        <div class="dashboard-heading">
+            <div>
+                <div class="dashboard-kicker">Care directory</div>
+                <h1>Patient details</h1>
+                <p>Keep every patient profile clear, current, and easy to reach.</p>
+            </div>
+            <div class="dashboard-pulse"><i class="fas fa-circle"></i> Patient records live</div>
+        </div>
+
+        {% if patients %}
+        <section class="patient-directory">
+            <div class="patient-summary"><span><i class="fas fa-procedures"></i> Registered patients</span><strong>{{patients|length}} profiles</strong></div>
+            <div class="patient-grid">
+            {% for patient in patients %}
+            <article class="patient-card">
+                <div class="patient-card-head">
+                    {% if patient.profile_pic %}<img class="patient-photo" src="{{ patient.profile_pic.url }}" alt="{{patient.get_name}} profile">{% else %}<span class="patient-photo patient-photo-empty"><i class="fas fa-user"></i></span>{% endif %}
+                    <div><h2 class="patient-name">{{patient.get_name}}</h2><span class="patient-record"><i class="fas fa-id-card"></i> Registered patient</span></div>
+                    <span class="patient-ready {% if not patient.user.is_active %}patient-inactive{% endif %}"><i class="fas fa-heartbeat"></i> {% if patient.user.is_active %}Active{% else %}Not active{% endif %}</span>
+                </div>
+                <div class="patient-card-body">
+                    <div class="patient-detail"><span>Blood group</span><strong class="patient-blood">{{patient.bloodgroup}}</strong></div>
+                    <div class="patient-detail"><span>Age</span><strong>{{patient.age}} years</strong></div>
+                    <div class="patient-detail"><span>Medical condition</span><strong>{{patient.disease}}</strong></div>
+                    <div class="patient-detail"><span>Doctor</span><strong>{{patient.doctorname}}</strong></div>
+                    <div class="patient-detail"><span>Mobile</span><strong>{{patient.mobile}}</strong></div>
+                    <div class="patient-detail"><span>Address</span><strong>{{patient.address}}</strong></div>
+                </div>
+                <div class="patient-card-actions"><a class="patient-view" href="{% url 'patient-detail' patient.id %}"><i class="fas fa-eye"></i> View</a><a class="patient-edit" href="{% url 'update-patient' patient.id %}"><i class="fas fa-edit"></i> Edit profile</a><a class="patient-delete" href="{% url 'delete-patient' patient.id %}"><i class="fas fa-trash-alt"></i> Delete</a></div>
+            </article>
+            {% endfor %}
+            </div>
+        </section>
+        {% else %}
+        <section class="patient-directory empty-patients"><i class="fas fa-user-plus"></i><h2>No patient profiles</h2><p>New patient registrations will appear here.</p></section>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

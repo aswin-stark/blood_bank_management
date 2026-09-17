@@ -1,0 +1,92 @@
+{% extends 'blood/adminbase.html' %}
+{% block content %}
+<div class="dashboard-main pending-request-page">
+    {% include "blood/login_cells.html" %}
+    <div class="dashboard-content">
+        {% if message %}<div class="stock-alert" role="alert"><i class="fas fa-exclamation-triangle"></i><div><strong>Out of stock</strong><span>{{ message }}</span></div><button type="button" onclick="this.parentElement.remove()" aria-label="Close alert">&times;</button></div>{% endif %}
+        <div class="dashboard-heading">
+            <div>
+                <div class="dashboard-kicker">Needs attention</div>
+                <h1>Blood requested</h1>
+                <p>Review pending requests and keep urgent care moving.</p>
+            </div>
+            <div class="dashboard-pulse request-pulse"><i class="fas fa-circle"></i> Awaiting review</div>
+        </div>
+
+        {% if requests %}
+        <section class="pending-request-list">
+            <div class="pending-summary"><span><i class="fas fa-bell"></i> Pending queue</span><strong>{{requests|length}} requests waiting</strong></div>
+            <div class="pending-cards">
+            {% for request in requests %}
+            <article class="pending-request-card">
+                <div class="card-stock-alert" role="alert" aria-hidden="true">
+                    <button type="button" class="card-stock-alert-close" aria-label="Close out of stock alert">&times;</button>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Out of stock</strong>
+                    <span>Only {{request.available_units}} unit(s) available for {{request.bloodgroup}}.</span>
+                    <small>{{request.unit}} unit(s) requested</small>
+                </div>
+                <div class="pending-card-top">
+                    <div class="request-patient"><span class="patient-avatar"><i class="fas fa-user"></i></span><div><strong>{{request.patient_name}}</strong><small>Age {{request.patient_age}}</small></div></div>
+                    <span class="pending-badge"><i class="fas fa-clock"></i> Pending</span>
+                </div>
+                <div class="pending-card-body">
+                    <div class="pending-detail"><span>Blood group</span><strong class="request-blood-group">{{request.bloodgroup}}</strong></div>
+                    <div class="pending-detail"><span>Units requested</span><strong class="request-units">{{request.unit}} <small>ml</small></strong></div>
+                    <div class="pending-detail"><span>Requested on</span><strong class="request-date">{{request.date|date:"d M Y"}}</strong></div>
+                </div>
+                <div class="pending-reason"><span><i class="fas fa-notes-medical"></i> Reason</span><p>{{request.reason}}</p></div>
+                <div class="pending-card-actions"><a class="approve-request" data-available="{{request.available_units}}" data-requested="{{request.unit}}" href="{% url 'update-approve-status' request.id %}"><i class="fas fa-check"></i> Approve request</a><a class="reject-request" href="{% url 'update-reject-status' request.id %}"><i class="fas fa-times"></i> Reject</a></div>
+            </article>
+            {% endfor %}
+            </div>
+        </section>
+        {% else %}
+        <section class="pending-request-list empty-history"><i class="fas fa-check-double"></i><h2>No pending requests</h2><p>New blood requests will appear here for review.</p></section>
+        {% endif %}
+    </div>
+</div>
+<style>
+    .stock-alert { align-items: center; animation: stock-alert-in .55s ease both, stock-alert-pulse 1.8s ease-in-out .55s 3; background: linear-gradient(110deg, #fff0f0, #fff8e8); border: 1px solid #f1a0a7; border-left: 5px solid #d9364d; border-radius: 10px; box-shadow: 0 12px 26px rgba(197, 47, 69, .17); color: #8f2538; display: flex; gap: 14px; margin-bottom: 24px; padding: 15px 18px; position: relative; }
+    .stock-alert > i { animation: stock-alert-icon 1.1s ease-in-out infinite; color: #d9364d; font-size: 23px; }
+    .stock-alert strong, .stock-alert span { display: block; }
+    .stock-alert strong { color: #b5263f; font-family: 'Space Grotesk', sans-serif; font-size: 14px; margin-bottom: 3px; }
+    .stock-alert span { color: #6f4a50; font-size: 12px; }
+    .stock-alert button { background: transparent; border: 0; color: #b5263f; cursor: pointer; font-size: 24px; line-height: 1; margin-left: auto; padding: 4px 7px; }
+    @keyframes stock-alert-in { from { opacity: 0; transform: translateY(-14px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes stock-alert-pulse { 0%, 100% { box-shadow: 0 12px 26px rgba(197, 47, 69, .17); } 50% { box-shadow: 0 0 0 6px rgba(217, 54, 77, .13), 0 15px 32px rgba(197, 47, 69, .25); } }
+    @keyframes stock-alert-icon { 0%, 100% { transform: scale(1) rotate(0); } 35% { transform: scale(1.18) rotate(-8deg); } 70% { transform: scale(1.05) rotate(8deg); } }
+    @media (max-width: 600px) { .stock-alert { align-items: flex-start; } .stock-alert span { line-height: 1.45; } }
+    .pending-request-card { position: relative; }
+    .card-stock-alert { align-items: center; background: linear-gradient(135deg, rgba(255, 244, 231, .98), rgba(255, 225, 221, .98)); border: 2px solid #ed6170; border-radius: 10px; box-shadow: 0 0 0 5px rgba(237, 97, 112, .12), 0 18px 35px rgba(140, 35, 50, .26); display: flex; flex-direction: column; inset: 9px; justify-content: center; opacity: 0; padding: 25px; pointer-events: none; position: absolute; text-align: center; transform: scale(.88); transition: opacity .25s ease, transform .25s ease; z-index: 5; }
+    .card-stock-alert.is-visible { animation: card-stock-alert-pulse 1.7s ease-in-out infinite; opacity: 1; pointer-events: auto; transform: scale(1); }
+    .card-stock-alert > i { animation: card-stock-alert-icon 1s ease-in-out infinite; color: #d9364d; font-size: 31px; margin-bottom: 10px; }
+    .card-stock-alert strong { color: #b5263f; font-family: 'Space Grotesk', sans-serif; font-size: 20px; }
+    .card-stock-alert span { color: #70484f; font-size: 12px; margin-top: 8px; }
+    .card-stock-alert small { color: #a34c58; font-size: 11px; margin-top: 5px; }
+    .card-stock-alert-close { background: #fff; border: 1px solid #f1a0a7; border-radius: 50%; color: #b5263f; cursor: pointer; font-size: 20px; height: 30px; line-height: 20px; position: absolute; right: 10px; top: 10px; width: 30px; }
+    @keyframes card-stock-alert-pulse { 0%, 100% { box-shadow: 0 0 0 5px rgba(237, 97, 112, .12), 0 18px 35px rgba(140, 35, 50, .26); } 50% { box-shadow: 0 0 0 10px rgba(237, 97, 112, .18), 0 20px 42px rgba(140, 35, 50, .36); } }
+    @keyframes card-stock-alert-icon { 0%, 100% { transform: scale(1) rotate(0); } 40% { transform: scale(1.18) rotate(-8deg); } 70% { transform: scale(1.08) rotate(8deg); } }
+</style>
+<script>
+    document.querySelectorAll('.approve-request').forEach(function (approveLink) {
+        approveLink.addEventListener('click', function (event) {
+            var available = Number(approveLink.dataset.available);
+            var requested = Number(approveLink.dataset.requested);
+            if (available < requested) {
+                event.preventDefault();
+                var alert = approveLink.closest('.pending-request-card').querySelector('.card-stock-alert');
+                alert.classList.add('is-visible');
+                alert.setAttribute('aria-hidden', 'false');
+            }
+        });
+    });
+    document.querySelectorAll('.card-stock-alert-close').forEach(function (closeButton) {
+        closeButton.addEventListener('click', function () {
+            var alert = closeButton.closest('.card-stock-alert');
+            alert.classList.remove('is-visible');
+            alert.setAttribute('aria-hidden', 'true');
+        });
+    });
+</script>
+{% endblock content %}

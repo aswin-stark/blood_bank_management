@@ -1,0 +1,95 @@
+{% extends 'donor/donorbase.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    .request-history-page { min-height: calc(100vh - 62px); overflow: hidden; position: relative; }
+    .request-history-page::before { background: radial-gradient(circle, rgba(239, 67, 88, .12), transparent 68%); content: ''; height: 430px; pointer-events: none; position: absolute; right: -140px; top: 20px; width: 430px; }
+    .request-history-content { margin: 0 auto; max-width: 1320px; padding: 46px 46px 70px; position: relative; z-index: 1; }
+    .request-history-heading { align-items: flex-end; display: flex; justify-content: space-between; margin-bottom: 28px; }
+    .request-history-kicker { color: #d9364d; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+    .request-history-heading h1 { color: #20252d; font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; margin: 7px 0 5px; }
+    .request-history-heading p { color: #78818e; font-size: 14px; margin: 0; }
+    .request-history-count { align-items: center; color: #697583; display: flex; font-size: 12px; gap: 8px; }
+    .request-history-count i { animation: request-pulse 2s ease-in-out infinite; color: #2cb67d; font-size: 10px; }
+    .request-history-panel { animation: request-panel-in .6s ease both; background: rgba(255, 255, 255, .76); border: 1px solid rgba(206, 213, 223, .85); border-radius: 14px; box-shadow: 0 16px 35px rgba(38, 45, 54, .08); overflow: hidden; }
+    .request-history-panel-head { align-items: center; background: #fff; border-bottom: 1px solid #e4e8ed; display: flex; justify-content: space-between; padding: 20px 24px; }
+    .request-history-panel-head h2 { color: #4e5866; font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin: 0; }
+    .request-history-panel-head h2 i { color: #d9364d; margin-right: 9px; }
+    .request-history-panel-head span { color: #d9364d; font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; }
+    .request-history-table-wrap { overflow-x: auto; }
+    .request-history-table { border-collapse: collapse; min-width: 820px; width: 100%; }
+    .request-history-table th { background: #f7f9fb; color: #7a8490; font-size: 10px; letter-spacing: .8px; padding: 16px 18px; text-align: left; text-transform: uppercase; }
+    .request-history-table td { border-top: 1px solid #e4e8ed; color: #46515e; font-size: 13px; padding: 19px 18px; vertical-align: middle; }
+    .request-history-table tbody tr { animation: request-row-in .5s ease both; transition: background .25s ease, transform .25s ease; }
+    .request-history-table tbody tr:nth-child(2) { animation-delay: .06s; }
+    .request-history-table tbody tr:nth-child(3) { animation-delay: .12s; }
+    .request-history-table tbody tr:nth-child(4) { animation-delay: .18s; }
+    .request-history-table tbody tr:nth-child(5) { animation-delay: .24s; }
+    .request-history-table tbody tr:hover { background: #fff7f7; transform: translateX(4px); }
+    .request-patient-name { color: #28313b; font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+    .request-reason { color: #6f7b88; }
+    .request-blood-group { background: #fff0f0; border-radius: 18px; color: #c52940; display: inline-block; font-family: 'Space Grotesk', sans-serif; font-weight: 700; padding: 7px 10px; }
+    .request-units { color: #28313b; font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; }
+    .request-date { color: #788590; white-space: nowrap; }
+    .request-status { border-radius: 20px; display: inline-flex; font-size: 10px; font-weight: 700; letter-spacing: .4px; padding: 8px 11px; text-transform: uppercase; white-space: nowrap; }
+    .request-status i { margin-right: 5px; }
+    .request-status-approved { background: #e8f9f0; color: #229567; }
+    .request-status-pending { background: #fff5df; color: #bb791d; }
+    .request-status-rejected { background: #fff0f0; color: #c82f46; }
+    @keyframes request-panel-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes request-row-in { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes request-pulse { 0%, 100% { opacity: .45; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.2); } }
+    @media (max-width: 700px) { .request-history-content { padding: 30px 16px 50px; } .request-history-heading { align-items: flex-start; display: block; } .request-history-heading h1 { font-size: 29px; } .request-history-count { margin-top: 14px; } .request-history-panel-head { align-items: flex-start; display: block; } .request-history-panel-head span { display: block; margin: 8px 0 0 25px; } }
+</style>
+
+<div class="request-history-page">
+    {% include "blood/login_cells.html" %}
+    <div class="request-history-content">
+        <div class="request-history-heading">
+            <div>
+                <div class="request-history-kicker">Donor workspace</div>
+                <h1>My blood requests</h1>
+                <p>Follow every request from submission to approval.</p>
+            </div>
+            <div class="request-history-count"><i class="fas fa-circle"></i> Account active</div>
+        </div>
+        <section class="request-history-panel">
+            <div class="request-history-panel-head">
+                <h2><i class="fas fa-history"></i> Request history</h2>
+                <span>{{ blood_request|length }} total requests</span>
+            </div>
+            <div class="request-history-table-wrap">
+                <table class="request-history-table">
+                    <thead>
+                        <tr><th>Patient</th><th>Age</th><th>Reason</th><th>Blood group</th><th>Units</th><th>Date</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for t in blood_request %}
+                        <tr>
+                            <td class="request-patient-name">{{ t.patient_name }}</td>
+                            <td>{{ t.patient_age }}</td>
+                            <td class="request-reason">{{ t.reason }}</td>
+                            <td><span class="request-blood-group">{{ t.bloodgroup }}</span></td>
+                            <td class="request-units">{{ t.unit }}</td>
+                            <td class="request-date">{{ t.date }}</td>
+                            {% if t.status == 'Approved' %}
+                            <td><span class="request-status request-status-approved"><i class="fas fa-check"></i>Approved</span></td>
+                            {% elif t.status == 'Rejected' %}
+                            <td><span class="request-status request-status-rejected"><i class="fas fa-times"></i>Rejected</span></td>
+                            {% else %}
+                            <td><span class="request-status request-status-pending"><i class="fas fa-hourglass-half"></i>Pending</span></td>
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="7" class="text-center">No blood requests yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+
+
+{% endblock content %}

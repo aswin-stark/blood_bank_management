@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <style type="text/css">
+    .bs-example { margin: 0; }
+    .admin-topbar {
+      background: linear-gradient(115deg, #94142f, #d92345 42%, #ff6472 78%, #d92345);
+      background-size: 220% 100%;
+      box-shadow: 0 7px 25px rgba(164, 29, 50, .34);
+      height: 62px;
+      left: 0;
+      overflow: hidden;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: 1000;
+      animation: header-gradient 12s ease-in-out infinite;
+    }
+    .admin-topbar::before {
+      animation: header-shine 7s ease-in-out infinite;
+      background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, .2) 50%, transparent 65%);
+      content: '';
+      inset: 0;
+      pointer-events: none;
+      position: absolute;
+      transform: translateX(-100%);
+    }
+    .admin-topbar::after {
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 50%;
+      content: '';
+      height: 150px;
+      position: absolute;
+      right: 9%;
+      top: -105px;
+      width: 150px;
+    }
+    .admin-topbar .navbar-brand,
+    .admin-topbar .navbar-nav { position: relative; z-index: 2; }
+    .admin-topbar.navbar { flex-wrap: nowrap; }
+    .admin-topbar .navbar-brand {
+      color: #fff;
+      flex: 1 1 auto;
+      font-family: 'Space Grotesk', 'DM Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: opacity .35s ease, transform .35s ease;
+      white-space: nowrap;
+    }
+    .admin-topbar .navbar-brand i { color: #fff; }
+    .admin-topbar .nav-link {
+      align-items: center;
+      border-radius: 4px;
+      color: #fff !important;
+      display: flex;
+      font-weight: 600;
+      gap: 8px;
+      padding: .55rem .75rem;
+      position: relative;
+      transition: background .25s ease, color .25s ease, transform .25s ease;
+    }
+    .admin-topbar .nav-link::after {
+      background: #fff;
+      bottom: 3px;
+      content: '';
+      height: 2px;
+      left: 12px;
+      opacity: 0;
+      position: absolute;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: opacity .25s ease, transform .25s ease;
+      width: calc(100% - 24px);
+    }
+    .admin-topbar .nav-link i { transition: filter .25s ease, transform .25s ease; }
+    .admin-topbar .nav-link:hover,
+    .admin-topbar .nav-link:focus {
+      background: rgba(255, 255, 255, .16);
+      color: #ffe7e8 !important;
+      transform: translateY(-2px);
+    }
+    .admin-topbar .nav-link:hover::after,
+    .admin-topbar .nav-link:focus::after { opacity: 1; transform: scaleX(1); }
+    .admin-topbar .nav-link:hover i,
+    .admin-topbar .nav-link:focus i { filter: drop-shadow(0 0 6px rgba(255, 255, 255, .8)); transform: scale(1.18) rotate(-6deg); }
+    .admin-topbar .navbar-collapse {
+      display: block !important;
+      flex: 0 0 auto;
+      margin-left: auto;
+      width: auto;
+    }
+    .admin-topbar .desktop-links .navbar-nav { margin-left: 0 !important; }
+    .mobile-menu-toggle { display: none; }
+    .mobile-menu,
+    .mobile-menu-overlay { display: none; }
+    @keyframes header-shine {
+      0%, 35% { transform: translateX(-100%); }
+      65%, 100% { transform: translateX(100%); }
+    }
+    @keyframes header-gradient { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    @media (max-width: 991px) {
+      .admin-topbar { height: 62px; min-height: 62px; overflow: visible; }
+      .admin-topbar .desktop-links { display: none !important; }
+      .mobile-menu-toggle {
+        align-items: center;
+        background: linear-gradient(145deg, #f43d62, #b3133b);
+        border: 0;
+        border-radius: 50%;
+        box-shadow: 0 8px 18px rgba(91, 8, 25, .3), 0 0 0 5px rgba(255, 255, 255, .08);
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        flex: 0 0 44px;
+        height: 44px;
+        justify-content: center;
+        margin-left: 0;
+        margin-right: 12px;
+        order: -1;
+        position: relative;
+        transition: box-shadow .3s ease, transform .3s ease;
+        width: 44px;
+        z-index: 1102;
+      }
+      .mobile-menu-toggle:hover,
+      .mobile-menu-toggle:focus { box-shadow: 0 11px 24px rgba(91, 8, 25, .4), 0 0 0 8px rgba(255, 255, 255, .1); outline: none; transform: scale(1.07); }
+      .mobile-menu-toggle span { background: #fff; border-radius: 3px; display: block; height: 3px; margin: 4px 0; transition: transform .3s ease, opacity .2s ease; width: 22px; }
+      .mobile-menu-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .mobile-menu-toggle.is-open span:nth-child(2) { opacity: 0; }
+      .mobile-menu-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+      .mobile-menu-overlay { background: rgba(35, 3, 11, .58); inset: 0; opacity: 0; pointer-events: none; position: fixed; transition: opacity .35s ease; z-index: 1098; }
+      .mobile-menu-overlay.is-visible { display: block; opacity: 1; pointer-events: auto; }
+      .mobile-menu {
+        background: linear-gradient(155deg, #bd123b, #e72b50 65%, #a80e36);
+        box-shadow: 14px 0 35px rgba(52, 4, 17, .28);
+        display: block;
+        height: 100vh;
+        left: 0;
+        max-width: 380px;
+        overflow: hidden;
+        padding: 86px 20px 28px;
+        position: fixed;
+        top: 0;
+        transform: translateX(-105%);
+        transition: transform .55s cubic-bezier(.2, .8, .2, 1);
+        width: min(88vw, 380px);
+        z-index: 1101;
+      }
+      .mobile-menu.is-open { transform: translateX(0); }
+      .mobile-menu::before { border: 1px solid rgba(255, 255, 255, .2); border-radius: 50%; content: ''; height: 220px; position: absolute; right: -90px; top: -95px; width: 220px; }
+      .mobile-menu::after { background: rgba(255, 255, 255, .08); border-radius: 50% 50% 0 0; bottom: -85px; content: ''; height: 180px; left: -35px; position: absolute; transform: rotate(-7deg); width: 125%; }
+      .mobile-menu-brand { align-items: center; color: #fff; display: flex; flex-direction: column; font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; gap: 9px; margin-bottom: 26px; position: relative; text-align: center; z-index: 1; }
+      .mobile-menu-brand i { align-items: center; background: #fff; border-radius: 50%; color: #d51d47; display: flex; font-size: 25px; height: 62px; justify-content: center; width: 62px; }
+      .mobile-menu-brand small { color: rgba(255, 255, 255, .7); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 400; margin-top: -5px; }
+      .mobile-menu-close { background: none; border: 0; color: #fff; font-size: 28px; line-height: 1; padding: 8px; position: absolute; right: 12px; top: 14px; z-index: 2; }
+      .mobile-menu-list { border-top: 1px solid rgba(255, 255, 255, .16); list-style: none; margin: 0; padding: 14px 0 0; position: relative; z-index: 1; }
+      .mobile-menu-list li { opacity: 0; transform: translateX(-18px); }
+      .mobile-menu.is-open .mobile-menu-list li { animation: drawer-item-in .45s ease forwards; }
+      .mobile-menu.is-open .mobile-menu-list li:nth-child(2) { animation-delay: .07s; }
+      .mobile-menu.is-open .mobile-menu-list li:nth-child(3) { animation-delay: .14s; }
+      .mobile-menu.is-open .mobile-menu-list li:nth-child(4) { animation-delay: .21s; }
+      .mobile-menu-list a { align-items: center; border-bottom: 1px solid rgba(255, 255, 255, .12); border-radius: 12px; color: #fff; display: flex; font-size: 17px; font-weight: 700; gap: 17px; min-height: 66px; padding: 10px 14px; text-decoration: none; transition: background .25s ease, padding-left .25s ease, box-shadow .25s ease; }
+      .mobile-menu-list a:hover, .mobile-menu-list a:focus { background: rgba(255, 255, 255, .14); box-shadow: 0 8px 18px rgba(105, 6, 31, .15); color: #fff; outline: none; padding-left: 20px; }
+      .mobile-menu-list a.active { background: rgba(255, 255, 255, .18); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18), 0 8px 18px rgba(105, 6, 31, .17); }
+      .mobile-menu-list i { align-items: center; background: rgba(255, 255, 255, .95); border-radius: 50%; color: #d31c46; display: flex; flex: 0 0 38px; font-size: 18px; height: 38px; justify-content: center; width: 38px; }
+      .mobile-menu-list .arrow { background: none; color: #fff; font-size: 25px; height: auto; margin-left: auto; width: auto; }
+    }
+    @keyframes drawer-item-in { to { opacity: 1; transform: translateX(0); } }
+    @media (max-width: 575px) { .admin-topbar { padding-left: 16px; padding-right: 16px; } }
+    @media (prefers-reduced-motion: reduce) {
+      .admin-topbar *, .admin-topbar *::before, .admin-topbar *::after { transition-duration: .01ms; }
+    }
+  </style>
+</head>
+
+<body>
+
+
+
+  <div class="bs-example">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top admin-topbar">
+      <a href="/" class="navbar-brand"><i class="fab fa-gratipay"></i>&nbsp; Blood Bank Management System</a>
+      <button class="mobile-menu-toggle" type="button" aria-controls="mobileMenu" aria-expanded="false" aria-label="Open navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="navbar-collapse desktop-links" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home"></i>&nbsp; Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/patient/patientlogin"><i class="fas fa-procedures"></i>&nbsp; Patient</a></li>
+          <li class="nav-item"><a class="nav-link" href="/donor/donorlogin"><i class="fas fa-user"></i>&nbsp; Donor</a></li>
+          <li class="nav-item"><a class="nav-link" href="/adminlogin"><i class="fas fa-user-shield"></i>&nbsp; Admin</a></li>
+        </ul>
+      </div>
+      <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+      <aside class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <button class="mobile-menu-close" type="button" aria-label="Close navigation menu">&times;</button>
+        <div class="mobile-menu-brand"><i class="fas fa-heartbeat"></i><span>BloodLink</span><small>Save Life, Be a Hero</small></div>
+        <ul class="mobile-menu-list">
+          <li><a class="active" href="/"><i class="fas fa-home"></i><span>Home</span><i class="arrow fas fa-angle-right"></i></a></li>
+          <li><a href="/patient/patientlogin"><i class="fas fa-procedures"></i><span>Patient</span><i class="arrow fas fa-angle-right"></i></a></li>
+          <li><a href="/donor/donorlogin"><i class="fas fa-heart"></i><span>Donor</span><i class="arrow fas fa-angle-right"></i></a></li>
+          <li><a href="/adminlogin"><i class="fas fa-user-shield"></i><span>Admin</span><i class="arrow fas fa-angle-right"></i></a></li>
+        </ul>
+      </aside>
+    </nav>
+  </div>
+
+  <script>
+    (function () {
+      var toggle = document.querySelector('.mobile-menu-toggle');
+      var menu = document.getElementById('mobileMenu');
+      var overlay = document.getElementById('mobileMenuOverlay');
+      var close = document.querySelector('.mobile-menu-close');
+      function setMenu(open) {
+        toggle.classList.toggle('is-open', open);
+        menu.classList.toggle('is-open', open);
+        overlay.classList.toggle('is-visible', open);
+        toggle.setAttribute('aria-expanded', open);
+        toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        menu.setAttribute('aria-hidden', !open);
+      }
+      toggle.addEventListener('click', function () { setMenu(!menu.classList.contains('is-open')); });
+      close.addEventListener('click', function () { setMenu(false); });
+      overlay.addEventListener('click', function () { setMenu(false); });
+      document.addEventListener('keydown', function (event) { if (event.key === 'Escape') setMenu(false); });
+    }());
+  </script>
+
+</body>
+
+</html>

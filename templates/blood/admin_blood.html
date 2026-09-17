@@ -1,0 +1,54 @@
+{% extends 'blood/adminbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="dashboard-main stock-page">
+    {% include "blood/login_cells.html" %}
+    <div class="dashboard-content">
+        <div class="dashboard-heading">
+            <div>
+                <div class="dashboard-kicker">Inventory control</div>
+                <h1>Blood stock</h1>
+                <p>Keep every blood group ready for the next request.</p>
+            </div>
+            <div class="dashboard-pulse"><i class="fas fa-circle"></i> Live inventory</div>
+        </div>
+
+        <section class="inventory-section stock-inventory">
+            <div class="section-label"><i class="fas fa-layer-group"></i> Current availability <span class="ml-auto">Units available</span></div>
+            <div class="blood-grid">
+                <article class="blood-card {% if not A1.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>A+</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{A1.unit}}</strong> units</div>{% if not A1.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not B1.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>B+</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{B1.unit}}</strong> units</div>{% if not B1.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not O1.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>O+</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{O1.unit}}</strong> units</div>{% if not O1.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not AB1.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>AB+</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{AB1.unit}}</strong> units</div>{% if not AB1.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not A2.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>A-</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{A2.unit}}</strong> units</div>{% if not A2.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not B2.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>B-</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{B2.unit}}</strong> units</div>{% if not B2.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not O2.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>O-</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{O2.unit}}</strong> units</div>{% if not O2.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not AB2.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>AB-</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{AB2.unit}}</strong> units</div>{% if not AB2.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+            </div>
+        </section>
+
+        <section class="stock-update-panel">
+            <div class="stock-update-copy">
+                <div class="dashboard-kicker">Quick update</div>
+                <h2>Refresh the supply</h2>
+                <p>Select a blood group and enter its latest unit count. Updates appear immediately across the dashboard.</p>
+            </div>
+            <form method="POST" class="stock-update-form">
+                {% csrf_token %}
+                <label for="bloodgroup">Blood group</label>
+                <select id="bloodgroup" name="bloodgroup" required>
+                    <option disabled selected>Choose blood group</option>
+                    <option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option>
+                </select>
+                <label for="unit">Unit count</label>
+                <input id="unit" type="number" min="0" name="unit" placeholder="Enter units" required>
+                <label for="source">Blood source</label>
+                <input id="source" type="text" name="source" maxlength="150" placeholder="Hospital, donor or camp" required>
+                <label for="details">Giving details</label>
+                <textarea id="details" name="details" rows="2" maxlength="1000" placeholder="Optional notes about this contribution"></textarea>
+                <button type="submit" class="stock-update-button"><i class="fas fa-sync-alt"></i> Update stock</button>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock content %}

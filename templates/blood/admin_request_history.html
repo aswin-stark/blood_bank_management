@@ -1,0 +1,47 @@
+{% extends 'blood/adminbase.html' %}
+{% block content %}
+<div class="dashboard-main request-history-page">
+    {% include "blood/login_cells.html" %}
+    <div class="dashboard-content">
+        <div class="dashboard-heading">
+            <div>
+                <div class="dashboard-kicker">Decision archive</div>
+                <h1>Blood request history</h1>
+                <p>Track every completed request and its effect on inventory.</p>
+            </div>
+            <div class="dashboard-pulse"><i class="fas fa-circle"></i> History synced</div>
+        </div>
+
+        {% if requests %}
+        <section class="request-history-list">
+            <div class="history-summary"><span><i class="fas fa-history"></i> Completed requests</span><strong>{{requests|length}} records</strong></div>
+            <div class="request-table-wrap">
+                <table class="request-history-table">
+                    <thead><tr><th>Patient</th><th>Request</th><th>Blood group</th><th>Units</th><th>Requested</th><th>Result</th><th>Stock impact</th></tr></thead>
+                    <tbody>
+                    {% for request in requests %}
+                    <tr>
+                        <td><div class="request-patient"><span class="patient-avatar"><i class="fas fa-user"></i></span><div><strong>{{request.patient_name}}</strong><small>Age {{request.patient_age}}</small></div></div></td>
+                        <td><div class="request-reason">{{request.reason}}</div></td>
+                        <td><span class="request-blood-group">{{request.bloodgroup}}</span></td>
+                        <td><span class="request-units">{{request.unit}}</span> <small>ml</small></td>
+                        <td><span class="request-date">{{request.date|date:"d M Y"}}</span></td>
+                        {% if request.status == 'Approved' %}
+                        <td><span class="request-status status-approved"><i class="fas fa-check"></i> Approved</span></td>
+                        <td><span class="stock-impact impact-deducted"><i class="fas fa-arrow-down"></i> {{request.unit}} units deducted</span></td>
+                        {% else %}
+                        <td><span class="request-status status-rejected"><i class="fas fa-times"></i> {{request.status}}</span></td>
+                        <td><span class="stock-impact impact-kept"><i class="fas fa-minus"></i> No units deducted</span></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        {% else %}
+        <section class="request-history-list empty-history"><i class="fas fa-clipboard-check"></i><h2>No completed requests</h2><p>Approved and rejected requests will appear here.</p></section>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

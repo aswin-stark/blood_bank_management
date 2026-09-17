@@ -1,0 +1,182 @@
+{% extends 'blood/adminbase.html' %}
+{% block content %}
+{% load widget_tweaks %}
+{%load static%}
+<head>
+        <!-- Font special for pages-->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+
+        <!-- Main CSS-->
+    
+        <link href="{% static "css/main.css" %}"rel="stylesheet" media="all">
+        <link href="{% static "css/main.css" %}" rel="stylesheet" media="all">
+</head>
+<div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+<style>
+    .patient-update-page {
+        min-height: calc(100vh - 62px);
+        padding: 42px 20px 60px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        position: relative;
+    }
+    .patient-update-page .wrapper--w790 { max-width: 790px; width: 100%; margin: 0 auto; }
+    .patient-update-page .auth-card { margin: 0 auto; width: 100%; }
+    .patient-update-intro { align-items: center; background: #f0f4ff; border-left: 3px solid #536fe4; color: #55627a; display: flex; font-size: 12px; gap: 9px; line-height: 1.5; margin: -12px 0 28px; padding: 10px 12px; }
+    .patient-update-intro i { color: #536fe4; font-size: 16px; }
+    .patient-update-page .form-row { animation: patient-update-field-in .55s ease both; }
+    .patient-update-page .form-row:nth-of-type(2) { animation-delay: .06s; }
+    .patient-update-page .form-row:nth-of-type(3) { animation-delay: .12s; }
+    .patient-update-page .form-row:nth-of-type(4) { animation-delay: .18s; }
+    .patient-update-page .form-row:nth-of-type(5) { animation-delay: .24s; }
+    .patient-update-page .form-row:nth-of-type(6) { animation-delay: .3s; }
+    .patient-update-page input[type="file"] { border-style: dashed; }
+    .patient-update-page .btn-danger { margin-top: 4px; }
+    @keyframes patient-update-field-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 767px) { .patient-update-page { padding: 30px 14px 50px; } .patient-update-intro { align-items: flex-start; } }
+</style>
+<div class="page-wrapper auth-page register-page patient-update-page">
+    <div class="wrapper wrapper--w790">
+      
+        <div class="card card-5">
+        <div class="card card-5 auth-card register-card">
+            <div class="card-heading">
+                <h2 class="title">Update Patient</h2>
+            </div>
+            <div class="card-body">
+                <div class="patient-update-intro"><i class="fas fa-procedures"></i><span>Keep this patient profile accurate so every blood request and medical requirement is handled promptly.</span></div>
+                <form method="POST" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-row">
+                        <div class="name">First Name</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field userForm.first_name|attr:'required:true'  class="input--style-5"  %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">Last Name</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field userForm.last_name|attr:'required:true'  class="input--style-5"  %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">Username</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field userForm.username|attr:'required:true'  class="input--style-5"  %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">Password</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field userForm.password|attr:'required:true'  class="input--style-5"  %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">Age</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field patientForm.age|attr:'required:true'  class="input--style-5"  %}
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-row">
+                        <div class="name">Blood Group</div>
+                        <div class="value">
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="bloodgroup">
+                                        <option disabled="disabled" selected="selected">Choose option</option>
+                                        <option>O+</option>
+                                        <option>O-</option>
+                                        <option>A+</option>
+                                        <option>A-</option>
+                                        <option>B+</option>
+                                        <option>B-</option>
+                                        <option>AB+</option>
+                                        <option>AB-</option>
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">Disease(if any)</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field patientForm.disease|attr:'required:true'  class="input--style-5"  %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">Doctor</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field patientForm.doctorname|attr:'required:true'  class="input--style-5"  %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">Address</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field patientForm.address|attr:'required:true'  class="input--style-5"  %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">Mobile</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field patientForm.mobile|attr:'required:true'  class="input--style-5"  %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">Profile Pic</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field patientForm.profile_pic|attr:'required:true'  class="input--style-5"  %}
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div>
+                        <button class="btn btn--radius-2 btn-danger" type="submit">Update</button>
+                        <button class="btn btn--radius-2 btn-danger" type="submit"><i class="fas fa-save"></i> Update profile</button>
+                    </div>
+                </form>
+                <br>
+                
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

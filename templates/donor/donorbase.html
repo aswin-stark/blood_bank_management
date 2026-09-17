@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DONOR</title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/role_dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/request_form.css' %}">
+
+    <style>
+
+
+
+ 
+
+    .row{
+        padding: 5px;
+    }
+    .fa-tint{     
+        color: red;    
+    }
+    .blood{
+        float: right;
+    }
+    .fa-users{     
+        color: blue; 
+        font-size: 3ex;   
+    }
+    .fa-spinner{     
+        color: blue; 
+        font-size: 3ex;   
+    }
+    .fa-check-circle{     
+        color: blue; 
+        font-size: 3ex;   
+    }
+    .xyz{     
+        color: blue; 
+        font-size: 3ex;   
+    }
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+body{
+   background-color: #f3f5f9;
+}
+.bg-danger {
+    background-color: #ff0018!important;
+}
+
+.wrapper{
+  display: flex;
+  position: relative;
+}
+
+.wrapper .sidebar{
+  width: 200px;
+  height: 100%;
+  background: 	#343a40;
+  padding: 30px 0px;
+  position: fixed;
+}
+
+.wrapper .sidebar h2{
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.wrapper .sidebar ul li{
+  padding: 15px;
+  border-bottom: 1px solid #bdb8d7;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}    
+
+.wrapper .sidebar ul li a{
+  color: #bdb8d7;
+  display: block;
+}
+
+.wrapper .sidebar ul li a .fas{
+  width: 25px;
+}
+
+.wrapper .sidebar ul li:hover{
+  background-color: #594f8d;
+}
+    
+.wrapper .sidebar ul li:hover a{
+  color: #fff;
+}
+ 
+.wrapper .sidebar .social_media{
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+}
+
+.wrapper .sidebar .social_media a{
+  display: block;
+  width: 40px;
+  background: #594f8d;
+  height: 40px;
+  line-height: 45px;
+  text-align: center;
+  margin: 0 5px;
+  color: #bdb8d7;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.wrapper .main_content{
+  width: 100%;
+  margin-left: 200px;
+}
+
+.wrapper .main_content .header{
+  padding: 20px;
+  background: #fff;
+  color: #717171;
+  border-bottom: 1px solid #e0e4e8;
+}
+
+.wrapper .main_content .info{
+  margin: 20px;
+  color: #717171;
+  line-height: 25px;
+}
+
+.wrapper .main_content .info div{
+  margin-bottom: 20px;
+}
+
+@media (max-height: 500px){
+  .social_media{
+    display: none !important;
+  }
+}
+.fa-sign-out-alt{
+    color: white;
+    font-size: 2ex;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+body { background: #eef1f6; color: #20252d; font-family: 'DM Sans', sans-serif; }
+.wrapper .sidebar { background: #20252d; box-shadow: 10px 0 35px rgba(23, 29, 38, .13); height: 100vh; overflow: hidden; padding: 62px 0 30px; width: 222px; z-index: 10; }
+.wrapper .sidebar::before { background: radial-gradient(circle, rgba(232, 67, 87, .24), transparent 68%); content: ''; height: 260px; left: -105px; pointer-events: none; position: absolute; top: 15px; width: 260px; }
+.wrapper .sidebar::after { border: 1px solid rgba(255, 155, 141, .13); border-radius: 50%; content: ''; height: 310px; pointer-events: none; position: absolute; right: -205px; top: 115px; width: 310px; }
+.wrapper .sidebar ul li { padding: 16px 20px; }
+.wrapper .sidebar ul li a { font-weight: 500; position: relative; transition: color .25s ease, transform .25s ease; }
+.wrapper .sidebar ul li:hover { background-color: #353c47; padding-left: 26px; transition: padding-left .25s ease, background .25s ease; }
+.wrapper .sidebar ul li:hover a { color: #fff; transform: translateX(3px); }
+.wrapper .sidebar ul li a::before { background: #ff5b6d; border-radius: 0 5px 5px 0; content: ''; height: 100%; left: -20px; opacity: 0; position: absolute; top: 0; transform: scaleY(.3); transition: opacity .25s ease, transform .25s ease; width: 3px; }
+.wrapper .sidebar ul li:hover a::before { opacity: 1; transform: scaleY(1); }
+.wrapper .sidebar ul li a .fas { transition: color .25s ease, filter .25s ease, transform .25s ease; }
+.wrapper .sidebar ul li:hover a .fas { color: #ff8790; filter: drop-shadow(0 0 5px rgba(255, 91, 109, .65)); transform: scale(1.12); }
+.wrapper .main_content { margin-left: 222px; min-height: 100vh; padding-top: 62px; width: 100%; }
+.admin-topbar { background: linear-gradient(100deg, #a81735, #e8324d 48%, #ff6472); box-shadow: 0 7px 25px rgba(164, 29, 50, .34); height: 62px; left: 0; overflow: hidden; position: fixed; right: 0; top: 0; z-index: 1000; }
+.admin-topbar::before { animation: header-shine 7s ease-in-out infinite; background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, .2) 50%, transparent 65%); content: ''; inset: 0; pointer-events: none; position: absolute; transform: translateX(-100%); }
+.admin-topbar::after { border: 1px solid rgba(255, 255, 255, .18); border-radius: 50%; content: ''; height: 150px; position: absolute; right: 9%; top: -105px; width: 150px; }
+.admin-topbar .navbar-brand, .admin-topbar .navbar-nav { position: relative; z-index: 2; }
+.admin-topbar .navbar-brand { font-family: 'Space Grotesk', sans-serif; font-weight: 600; transition: transform .25s ease; }
+.admin-topbar .navbar-brand:hover { transform: translateX(4px); }
+.admin-topbar .nav-link { font-weight: 600; transition: color .25s ease, transform .25s ease; }
+.admin-topbar .nav-link:hover { color: #ffe7e8 !important; transform: translateY(-2px); }
+.admin-nav-cells { inset: 0; overflow: hidden; pointer-events: none; position: absolute; z-index: 1; }
+.admin-nav-cell { animation: nav-cell-drift 9s ease-in-out infinite; background: rgba(255, 218, 214, .28); border: 2px solid rgba(255, 255, 255, .2); border-radius: 50%; box-shadow: 0 0 0 4px rgba(255, 255, 255, .04); height: 13px; position: absolute; width: 13px; }
+.admin-nav-cell:nth-child(1) { left: 31%; top: 35%; }
+.admin-nav-cell:nth-child(2) { animation-delay: -3s; height: 8px; left: 53%; top: 25%; width: 8px; }
+.admin-nav-cell:nth-child(3) { animation-delay: -6s; right: 22%; top: 47%; }
+.admin-nav-cell:nth-child(4) { animation-delay: -1.5s; bottom: 7%; height: 10px; right: 38%; width: 10px; }
+@keyframes nav-cell-drift { 0%, 100% { opacity: .2; transform: translate(0, 0); } 50% { opacity: .8; transform: translate(18px, -12px) rotate(90deg); } }
+@keyframes header-shine { 0%, 35% { transform: translateX(-100%); } 65%, 100% { transform: translateX(100%); } }
+.sidebar-quote { bottom: 42px; color: #d8d5e8; left: 18px; padding: 30px 12px 12px; position: absolute; right: 18px; text-align: center; z-index: 1; }
+.sidebar-quote::before, .sidebar-quote::after { border: 1px solid rgba(255, 119, 130, .24); border-radius: 50%; content: ''; height: 120px; left: 50%; position: absolute; top: 0; transform: translateX(-50%); width: 120px; }
+.sidebar-quote::after { animation: quote-ring-pulse 3.5s ease-in-out infinite; border-color: rgba(255, 119, 130, .12); height: 164px; top: -22px; width: 164px; }
+.sidebar-quote-mark { color: #ff7180; font-family: Georgia, serif; font-size: 44px; left: 50%; line-height: 1; position: absolute; top: 8px; transform: translateX(-50%); }
+.sidebar-quote p { color: #d8d5e8; font-family: 'Space Grotesk', sans-serif; font-size: 12px; line-height: 1.55; margin: 0; position: relative; z-index: 2; }
+.sidebar-quote small { color: #ff9b8d; display: block; font-size: 9px; font-weight: 700; letter-spacing: 1.2px; margin-top: 10px; position: relative; text-transform: uppercase; z-index: 2; }
+.quote-cell { animation: quote-cell-orbit 8s linear infinite; background: #ff6d79; border: 2px solid rgba(255, 236, 232, .4); border-radius: 50%; box-shadow: 0 0 0 4px rgba(255, 80, 100, .08), 0 0 10px rgba(255, 80, 100, .5); height: 10px; left: 50%; position: absolute; top: 58px; width: 10px; z-index: 1; }
+.quote-cell:nth-of-type(2) { animation-delay: -2s; animation-duration: 6s; height: 7px; width: 7px; }
+.quote-cell:nth-of-type(3) { animation-delay: -4s; animation-duration: 10s; height: 13px; width: 13px; }
+.quote-cell:nth-of-type(4) { animation-delay: -6s; animation-duration: 7s; height: 6px; width: 6px; }
+@keyframes quote-cell-orbit { from { transform: rotate(0deg) translateX(59px) rotate(0deg); } to { transform: rotate(360deg) translateX(59px) rotate(-360deg); } }
+@keyframes quote-ring-pulse { 0%, 100% { opacity: .35; transform: translateX(-50%) scale(.92); } 50% { opacity: .85; transform: translateX(-50%) scale(1.08); } }
+@media (max-width: 600px) { .wrapper .sidebar { padding-top: 62px; width: 68px; } .wrapper .sidebar ul li { padding: 17px 0; text-align: center; } .wrapper .sidebar ul li a { font-size: 0; } .wrapper .sidebar ul li a::before { left: 0; } .wrapper .sidebar ul li a .fas { font-size: 17px; width: auto; } .wrapper .main_content { margin-left: 68px; padding-top: 62px; width: calc(100% - 68px); } .admin-topbar .navbar-brand { font-size: 14px; } .sidebar-quote { bottom: 18px; left: 0; padding: 24px 1px 5px; right: 0; width: 68px; } .sidebar-quote::before { height: 46px; top: 7px; width: 46px; } .sidebar-quote::after { height: 62px; top: -1px; width: 62px; } .sidebar-quote-mark { font-size: 27px; top: 11px; } .sidebar-quote p { font-size: 0; height: 9px; } .sidebar-quote p::after { color: #ff9b8d; content: 'Give hope'; font-size: 8px; letter-spacing: .2px; white-space: nowrap; } .sidebar-quote small { font-size: 0; margin-top: 4px; } .sidebar-quote small::after { color: #bdb8d7; content: '\2665'; font-size: 12px; } .quote-cell { height: 5px; left: 50%; top: 30px; width: 5px; } .quote-cell:nth-of-type(2) { height: 4px; width: 4px; } .quote-cell:nth-of-type(3) { height: 6px; width: 6px; } .quote-cell:nth-of-type(4) { height: 3px; width: 3px; } @keyframes quote-cell-orbit { from { transform: rotate(0deg) translateX(15px) rotate(0deg); } to { transform: rotate(360deg) translateX(15px) rotate(-360deg); } } }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-danger admin-topbar">
+      <div class="admin-nav-cells" aria-hidden="true"><span class="admin-nav-cell"></span><span class="admin-nav-cell"></span><span class="admin-nav-cell"></span><span class="admin-nav-cell"></span></div>
+        <a style="color:white;" class="navbar-brand" href="/"><i class="fab fa-gratipay"></i>&nbsp;<font face = "Comic sans MS" size ="4">Blood Bank Management System</font></a>
+        
+      
+      </nav>
+<div class="wrapper">
+    <div class="sidebar">
+        
+        <ul>
+            <li><a style="text-decoration:none;" href="/"><i class="fas fa-home"></i>Home</a></li>
+            <li><a style="text-decoration:none;" href="/donor/donate-blood"><i class="fas fa-hand-holding-medical"></i>Donate Blood</a></li>
+            <li><a style="text-decoration:none;" href="/donor/donation-history"><i class="fas fa-history"></i>Donation History</a></li>
+            <li><a style="text-decoration:none;" href="/donor/make-request"><i class="fas fa-sync-alt"></i>Blood Request</a></li>
+            <li><a style="text-decoration:none;" href="/donor/request-history"><i class="fas fa-history"></i>Request History</a></li>
+            <li><a style="text-decoration:none;" href="/logout"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+
+        
+        </ul> 
+        <div class="sidebar-quote" aria-label="Blood donation quote">
+          <span class="sidebar-quote-mark">&ldquo;</span>
+          <span class="quote-cell"></span><span class="quote-cell"></span><span class="quote-cell"></span><span class="quote-cell"></span>
+          <p>Your kindness can be the pulse someone needs today.</p>
+          <small>Give blood. Give hope.</small>
+        </div>
+
+    </div>
+    <div class="main_content">
+
+
+{% block content %}
+
+{% endblock content %}
+
+
+
+    </div>
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>

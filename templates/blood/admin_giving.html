@@ -1,0 +1,36 @@
+{% extends 'blood/adminbase.html' %}
+{% block content %}
+<div class="dashboard-main giving-page">
+    {% include "blood/login_cells.html" %}
+    <div class="dashboard-content">
+        <div class="dashboard-heading">
+            <div>
+                <div class="dashboard-kicker">Contribution archive</div>
+                <h1>Giving details</h1>
+                <p>Review where every recorded blood contribution came from.</p>
+            </div>
+            <div class="dashboard-pulse"><i class="fas fa-circle"></i> Records protected</div>
+        </div>
+        <section class="giving-list">
+            {% if giving %}
+            <table class="giving-table">
+                <thead><tr><th>Blood group</th><th>Units</th><th>Source of blood</th><th>Details</th><th>Recorded</th></tr></thead>
+                <tbody>
+                {% for record in giving %}
+                <tr>
+                    <td><span class="giving-group">{{record.bloodgroup}}</span></td>
+                    <td><span class="giving-units">{{record.unit}}</span> units</td>
+                    <td><span class="giving-source">{{record.source}}</span></td>
+                    <td><div class="giving-details">{{record.details|default:"No additional details"}}</div></td>
+                    <td><span class="giving-date">{{record.date|date:"d M Y, H:i"}}</span></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-giving"><i class="fas fa-hand-holding-medical"></i><strong>No giving records yet</strong><br>New stock contributions will appear here.</div>
+            {% endif %}
+        </section>
+    </div>
+</div>
+{% endblock content %}

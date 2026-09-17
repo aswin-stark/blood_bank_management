@@ -1,0 +1,79 @@
+{% extends 'blood/adminbase.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .profile-detail-page { min-height: calc(100vh - 62px); overflow: hidden; position: relative; }
+    .profile-detail-page { min-height: calc(100vh - 62px); overflow: hidden; position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .profile-detail-page::before { background: radial-gradient(circle, rgba(239, 67, 88, .12), transparent 68%); content: ''; height: 430px; pointer-events: none; position: absolute; right: -120px; top: 0; width: 430px; }
+    .profile-detail-content { margin: 0 auto; max-width: 1320px; padding: 42px 42px 70px; position: relative; z-index: 1; }
+    .profile-detail-content { margin: 0 auto; max-width: 1380px; width: 100%; padding: 42px 42px 70px; position: relative; z-index: 1; box-sizing: border-box; }
+    .profile-detail-heading { align-items: flex-end; display: flex; justify-content: space-between; margin-bottom: 28px; }
+    .profile-detail-kicker { color: #d9364d; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+    .profile-detail-heading h1 { color: #20252d; font-family: 'Space Grotesk', sans-serif; font-size: 36px; margin: 7px 0 5px; }
+    .profile-detail-heading p { color: #78818e; font-size: 14px; margin: 0; }
+    .profile-detail-back { color: #d9364d; font-size: 12px; font-weight: 700; text-decoration: none; }
+    .profile-detail-back:hover { color: #a81735; text-decoration: none; }
+    .profile-hero { align-items: center; animation: profile-in .6s ease both; background: linear-gradient(115deg, #20252d, #3c4755); border-radius: 14px; box-shadow: 0 18px 35px rgba(31, 39, 49, .18); color: #fff; display: flex; gap: 20px; margin-bottom: 22px; overflow: hidden; padding: 25px 28px; position: relative; }
+    .profile-hero::after { border: 1px solid rgba(255, 155, 141, .3); border-radius: 50%; content: ''; height: 250px; position: absolute; right: -70px; top: -145px; width: 250px; }
+    .profile-image { border: 3px solid rgba(255, 255, 255, .8); border-radius: 50%; box-shadow: 0 7px 20px rgba(0, 0, 0, .2); height: 76px; object-fit: cover; width: 76px; }
+    .profile-image-empty { align-items: center; background: rgba(255, 255, 255, .13); color: #ff8790; display: flex; font-size: 28px; justify-content: center; }
+    .profile-hero h2 { font-family: 'Space Grotesk', sans-serif; font-size: 25px; margin: 0 0 5px; position: relative; z-index: 1; }
+    .profile-hero p { color: #cbd1d9; font-size: 13px; margin: 0; position: relative; z-index: 1; }
+    .profile-badge { background: #e8f9f0; border-radius: 20px; color: #229567; font-size: 10px; font-weight: 700; margin-left: auto; padding: 8px 11px; position: relative; text-transform: uppercase; z-index: 1; }
+    .profile-badge.inactive { background: #fff0f0; color: #c82f46; }
+    .profile-status-form { margin-left: 8px; position: relative; z-index: 1; }
+    .profile-status-button { background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .3); border-radius: 6px; color: #fff; cursor: pointer; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; padding: 9px 12px; transition: background .25s ease, transform .25s ease; }
+    .profile-status-button:hover { background: rgba(255, 255, 255, .22); transform: translateY(-2px); }
+    .profile-info-grid { display: grid; gap: 14px; grid-template-columns: repeat(4, 1fr); margin-bottom: 24px; }
+    .profile-info-item { animation: profile-in .55s ease both; background: #fff; border: 1px solid #e0e5eb; border-radius: 10px; box-shadow: 0 7px 18px rgba(38, 45, 54, .05); padding: 18px; transition: box-shadow .25s ease, transform .25s ease; }
+    .profile-info-item:hover { box-shadow: 0 14px 28px rgba(38, 45, 54, .11); transform: translateY(-4px); }
+    .profile-info-item span { color: #8b96a2; display: block; font-size: 10px; letter-spacing: .6px; margin-bottom: 7px; text-transform: uppercase; }
+    .profile-info-item strong { color: #46515e; display: block; font-size: 13px; overflow-wrap: anywhere; }
+    .profile-history-grid { display: grid; gap: 18px; grid-template-columns: repeat({% if profile_type == 'Donor' %}2{% else %}1{% endif %}, minmax(0, 1fr)); }
+    .profile-history { animation: profile-in .65s ease both; background: rgba(255, 255, 255, .78); border: 1px solid #dce2e9; border-radius: 12px; overflow: hidden; }
+    .profile-history h3 { background: #fff; border-bottom: 1px solid #e4e8ed; color: #4e5866; font-family: 'Space Grotesk', sans-serif; font-size: 16px; margin: 0; padding: 18px 20px; }
+    .profile-history h3 i { color: #d9364d; margin-right: 8px; }
+    .profile-history table { border-collapse: collapse; width: 100%; }
+    .profile-history th { color: #7a8490; font-size: 10px; padding: 13px 16px; text-align: left; text-transform: uppercase; }
+    .profile-history td { border-top: 1px solid #edf0f3; color: #53606d; font-size: 12px; padding: 15px 16px; vertical-align: middle; }
+    .profile-history tbody tr { transition: background .2s ease, transform .2s ease; }
+    .profile-history tbody tr:hover { background: #fff7f7; transform: translateX(3px); }
+    .history-group { background: #fff0f0; border-radius: 16px; color: #c52940; display: inline-block; font-family: 'Space Grotesk', sans-serif; font-weight: 700; padding: 6px 9px; }
+    .history-units { color: #d9364d; font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; }
+    .history-status { border-radius: 16px; display: inline-block; font-size: 9px; font-weight: 700; padding: 6px 9px; text-transform: uppercase; }
+    .history-approved { background: #e8f9f0; color: #229567; }
+    .history-pending { background: #fff5df; color: #bb791d; }
+    .history-rejected { background: #fff0f0; color: #c82f46; }
+    .history-empty { color: #8a949f; font-size: 12px; padding: 28px 20px; text-align: center; }
+    @keyframes profile-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 850px) { .profile-info-grid { grid-template-columns: repeat(2, 1fr); } .profile-history-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .profile-detail-content { padding: 30px 14px 50px; } .profile-detail-heading { align-items: flex-start; display: block; } .profile-detail-heading h1 { font-size: 29px; } .profile-detail-back { display: inline-block; margin-top: 14px; } .profile-hero { align-items: flex-start; flex-wrap: wrap; padding: 20px; } .profile-badge { margin-left: 0; } .profile-info-grid { gap: 10px; grid-template-columns: 1fr 1fr; } .profile-info-item { padding: 14px 12px; } .profile-history { overflow-x: auto; } .profile-history table { min-width: 520px; } }
+</style>
+
+<div class="profile-detail-page">
+    {% include "blood/login_cells.html" %}
+    <div class="profile-detail-content">
+        <div class="profile-detail-heading">
+            <div><div class="profile-detail-kicker">Profile overview</div><h1>{{ profile_type }} details</h1><p>Review profile information and the complete blood activity timeline.</p></div>
+            <a class="profile-detail-back" href="{% if profile_type == 'Donor' %}{% url 'admin-donor' %}{% else %}{% url 'admin-patient' %}{% endif %}"><i class="fas fa-arrow-left"></i> Back to directory</a>
+        </div>
+        <section class="profile-hero">
+            {% if profile.profile_pic %}<img class="profile-image" src="{{ profile.profile_pic.url }}" alt="{{ profile.get_name }} profile">{% else %}<span class="profile-image profile-image-empty"><i class="fas fa-user"></i></span>{% endif %}
+            <div><h2>{{ profile.get_name }}</h2><p><i class="fas fa-id-card"></i> Registered {{ profile_type|lower }}</p></div>
+            <span class="profile-badge {% if not profile.user.is_active %}inactive{% endif %}"><i class="fas fa-heartbeat"></i> {% if profile.user.is_active %}Active{% else %}Not active{% endif %}</span>
+            <form class="profile-status-form" method="post" action="{% if profile_type == 'Donor' %}{% url 'toggle-donor-status' profile.id %}{% else %}{% url 'toggle-patient-status' profile.id %}{% endif %}">{% csrf_token %}<button class="profile-status-button" type="submit"><i class="fas fa-edit"></i> Edit status: {% if profile.user.is_active %}Deactivate{% else %}Activate{% endif %}</button></form>
+        </section>
+        <div class="profile-info-grid">
+            <div class="profile-info-item"><span>Blood group</span><strong>{{ profile.bloodgroup }}</strong></div>
+            {% if profile_type == 'Donor' %}<div class="profile-info-item"><span>Mobile</span><strong>{{ profile.mobile }}</strong></div><div class="profile-info-item"><span>Address</span><strong>{{ profile.address }}</strong></div><div class="profile-info-item"><span>Donations</span><strong>{{ donations|length }} recorded</strong></div>{% else %}<div class="profile-info-item"><span>Age</span><strong>{{ profile.age }} years</strong></div><div class="profile-info-item"><span>Doctor</span><strong>{{ profile.doctorname }}</strong></div><div class="profile-info-item"><span>Mobile</span><strong>{{ profile.mobile }}</strong></div>{% endif %}
+        </div>
+        <div class="profile-history-grid">
+            {% if profile_type == 'Donor' %}
+            <section class="profile-history"><h3><i class="fas fa-hand-holding-medical"></i> Donation history</h3>{% if donations %}<table><thead><tr><th>Date</th><th>Blood group</th><th>Units</th><th>Status</th></tr></thead><tbody>{% for donation in donations %}<tr><td>{{ donation.date|date:"d M Y" }}</td><td><span class="history-group">{{ donation.bloodgroup }}</span></td><td class="history-units">{{ donation.unit }}</td><td><span class="history-status history-{{ donation.status|lower }}">{{ donation.status }}</span></td></tr>{% endfor %}</tbody></table>{% else %}<div class="history-empty">No donation history recorded.</div>{% endif %}</section>
+            {% endif %}
+            <section class="profile-history"><h3><i class="fas fa-history"></i> Requested blood history{% if profile_type == 'Patient' %} and received blood{% endif %}</h3>{% if requests %}<table><thead><tr><th>Date</th><th>Blood group</th><th>Units</th><th>Reason</th><th>Status</th></tr></thead><tbody>{% for request in requests %}<tr><td>{{ request.date|date:"d M Y" }}</td><td><span class="history-group">{{ request.bloodgroup }}</span></td><td class="history-units">{{ request.unit }}</td><td>{{ request.reason }}</td><td><span class="history-status history-{{ request.status|lower }}">{{ request.status }}</span></td></tr>{% endfor %}</tbody></table>{% else %}<div class="history-empty">No blood request history recorded.</div>{% endif %}</section>
+            {% if profile_type == 'Patient' %}<section class="profile-history"><h3><i class="fas fa-syringe"></i> Received blood history</h3>{% if received %}<table><thead><tr><th>Date</th><th>Blood group</th><th>Units</th><th>Reason</th></tr></thead><tbody>{% for request in received %}<tr><td>{{ request.date|date:"d M Y" }}</td><td><span class="history-group">{{ request.bloodgroup }}</span></td><td class="history-units">{{ request.unit }}</td><td>{{ request.reason }}</td></tr>{% endfor %}</tbody></table>{% else %}<div class="history-empty">No received blood history recorded.</div>{% endif %}</section>{% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

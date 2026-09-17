@@ -1,0 +1,93 @@
+{% extends 'donor/donorbase.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    .donation-history-page { min-height: calc(100vh - 62px); overflow: hidden; position: relative; }
+    .donation-history-page::before { background: radial-gradient(circle, rgba(239, 67, 88, .12), transparent 68%); content: ''; height: 430px; pointer-events: none; position: absolute; right: -140px; top: 20px; width: 430px; }
+    .donation-history-content { margin: 0 auto; max-width: 1320px; padding: 46px 46px 70px; position: relative; z-index: 1; }
+    .donation-history-heading { align-items: flex-end; display: flex; justify-content: space-between; margin-bottom: 28px; }
+    .donation-history-kicker { color: #d9364d; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+    .donation-history-heading h1 { color: #20252d; font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; margin: 7px 0 5px; }
+    .donation-history-heading p { color: #78818e; font-size: 14px; margin: 0; }
+    .donation-history-count { align-items: center; color: #697583; display: flex; font-size: 12px; gap: 8px; }
+    .donation-history-count i { animation: donation-pulse 2s ease-in-out infinite; color: #2cb67d; font-size: 10px; }
+    .donation-history-panel { animation: donation-panel-in .6s ease both; background: rgba(255, 255, 255, .76); border: 1px solid rgba(206, 213, 223, .85); border-radius: 14px; box-shadow: 0 16px 35px rgba(38, 45, 54, .08); overflow: hidden; }
+    .donation-history-panel-head { align-items: center; background: #fff; border-bottom: 1px solid #e4e8ed; display: flex; justify-content: space-between; padding: 20px 24px; }
+    .donation-history-panel-head h2 { color: #4e5866; font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin: 0; }
+    .donation-history-panel-head h2 i { color: #d9364d; margin-right: 9px; }
+    .donation-history-panel-head span { color: #d9364d; font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; }
+    .donation-history-table-wrap { overflow-x: auto; }
+    .donation-history-table { border-collapse: collapse; min-width: 760px; width: 100%; }
+    .donation-history-table th { background: #f7f9fb; color: #7a8490; font-size: 10px; letter-spacing: .8px; padding: 16px 18px; text-align: left; text-transform: uppercase; }
+    .donation-history-table td { border-top: 1px solid #e4e8ed; color: #46515e; font-size: 13px; padding: 20px 18px; vertical-align: middle; }
+    .donation-history-table tbody tr { animation: donation-row-in .5s ease both; transition: background .25s ease, transform .25s ease; }
+    .donation-history-table tbody tr:nth-child(2) { animation-delay: .06s; }
+    .donation-history-table tbody tr:nth-child(3) { animation-delay: .12s; }
+    .donation-history-table tbody tr:nth-child(4) { animation-delay: .18s; }
+    .donation-history-table tbody tr:hover { background: #fff7f7; transform: translateX(4px); }
+    .donation-age { color: #28313b; font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+    .donation-disease { color: #6f7b88; }
+    .donation-blood-group { background: #fff0f0; border-radius: 18px; color: #c52940; display: inline-block; font-family: 'Space Grotesk', sans-serif; font-weight: 700; padding: 7px 10px; }
+    .donation-units { color: #d9364d; font-family: 'Space Grotesk', sans-serif; font-size: 19px; font-weight: 700; }
+    .donation-date { color: #788590; white-space: nowrap; }
+    .donation-status { border-radius: 20px; display: inline-flex; font-size: 10px; font-weight: 700; letter-spacing: .4px; padding: 8px 11px; text-transform: uppercase; white-space: nowrap; }
+    .donation-status i { margin-right: 5px; }
+    .donation-status-approved { background: #e8f9f0; color: #229567; }
+    .donation-status-pending { background: #fff5df; color: #bb791d; }
+    .donation-status-rejected { background: #fff0f0; color: #c82f46; }
+    @keyframes donation-panel-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes donation-row-in { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes donation-pulse { 0%, 100% { opacity: .45; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.2); } }
+    @media (max-width: 700px) { .donation-history-content { padding: 30px 16px 50px; } .donation-history-heading { align-items: flex-start; display: block; } .donation-history-heading h1 { font-size: 29px; } .donation-history-count { margin-top: 14px; } .donation-history-panel-head { align-items: flex-start; display: block; } .donation-history-panel-head span { display: block; margin: 8px 0 0 25px; } }
+</style>
+
+<div class="donation-history-page">
+    {% include "blood/login_cells.html" %}
+    <div class="donation-history-content">
+        <div class="donation-history-heading">
+            <div>
+                <div class="donation-history-kicker">Donor workspace</div>
+                <h1>My donation history</h1>
+                <p>See how every donation helps keep the care network moving.</p>
+            </div>
+            <div class="donation-history-count"><i class="fas fa-circle"></i> Account active</div>
+        </div>
+        <section class="donation-history-panel">
+            <div class="donation-history-panel-head">
+                <h2><i class="fas fa-hand-holding-medical"></i> Donation history</h2>
+                <span>{{ donations|length }} total donations</span>
+            </div>
+            <div class="donation-history-table-wrap">
+                <table class="donation-history-table">
+                    <thead>
+                        <tr><th>Donor age</th><th>Disease (if any)</th><th>Blood group</th><th>Units</th><th>Date</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for t in donations %}
+                        <tr>
+                            <td class="donation-age">{{ t.age }}</td>
+                            <td class="donation-disease">{{ t.disease|default:'No disease reported' }}</td>
+                            <td><span class="donation-blood-group">{{ t.bloodgroup }}</span></td>
+                            <td class="donation-units">{{ t.unit }}</td>
+                            <td class="donation-date">{{ t.date }}</td>
+                            {% if t.status == 'Approved' %}
+                            <td><span class="donation-status donation-status-approved"><i class="fas fa-check"></i>Approved</span></td>
+                            {% elif t.status == 'Rejected' %}
+                            <td><span class="donation-status donation-status-rejected"><i class="fas fa-times"></i>Rejected</span></td>
+                            {% else %}
+                            <td><span class="donation-status donation-status-pending"><i class="fas fa-hourglass-half"></i>Pending</span></td>
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="6" class="text-center">No donations recorded yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+
+
+{% endblock content %}

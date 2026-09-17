@@ -1,0 +1,17 @@
+{% extends 'patient/patientbase.html' %}
+{% block content %}
+<div class="role-dashboard">
+  {% include "blood/login_cells.html" %}
+  <div class="role-dashboard-inner">
+    <div class="role-dashboard-heading"><div><div class="role-kicker">Patient workspace</div><h1>Your care pulse</h1><p>Stay close to every request and every step toward treatment.</p></div><div class="role-live"><i class="fas fa-circle"></i> Account active</div></div>
+    <section class="role-welcome"><div class="welcome-icon"><i class="fas fa-heartbeat"></i></div><div><h2>Care starts here</h2><p>Track your blood requests at a glance and stay connected to the care network.</p></div><a href="/patient/make-request" class="welcome-action">Make a request <i class="fas fa-arrow-right"></i></a></section>
+    <section class="role-metrics">
+      <article class="role-metric metric-total"><div class="metric-icon"><i class="fas fa-sync-alt"></i></div><div><span>Request made</span><strong>{{requestmade}}</strong><small>Total requests placed</small></div></article>
+      <article class="role-metric metric-pending"><div class="metric-icon"><i class="fas fa-hourglass-half"></i></div><div><span>Pending request</span><strong>{{requestpending}}</strong><small>Awaiting review</small></div></article>
+      <article class="role-metric metric-approved"><div class="metric-icon"><i class="fas fa-check-circle"></i></div><div><span>Approved request</span><strong>{{requestapproved}}</strong><small>Ready to move forward</small></div></article>
+      <article class="role-metric metric-rejected"><div class="metric-icon"><i class="fas fa-times-circle"></i></div><div><span>Rejected request</span><strong>{{requestrejected}}</strong><small>Needs another review</small></div></article>
+    </section>
+    <div class="role-footer-note"><i class="fas fa-shield-alt"></i><span>Your request history is kept secure.</span><a href="/patient/my-request">View request history</a></div>
+  </div>
+</div>
+{% endblock content %}

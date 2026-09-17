@@ -1,0 +1,34 @@
+{% extends 'blood/adminbase.html' %}
+{% block content %}
+<div class="dashboard-main">
+    {% include "blood/login_cells.html" %}
+    <div class="dashboard-content">
+        <div class="dashboard-heading">
+            <div><div class="dashboard-kicker">Operations overview</div><h1>Blood bank dashboard</h1><p>Monitor availability and keep every request moving.</p></div>
+            <div class="dashboard-pulse"><i class="fas fa-circle"></i> System live</div>
+        </div>
+        <section class="inventory-section">
+            <div class="section-label"><i class="fas fa-tint"></i> Blood inventory <span class="ml-auto">Units available</span></div>
+            <div class="blood-grid">
+                <article class="blood-card {% if not A1.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>A+</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{A1.unit}}</strong> units</div>{% if not A1.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not B1.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>B+</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{B1.unit}}</strong> units</div>{% if not B1.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not O1.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>O+</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{O1.unit}}</strong> units</div>{% if not O1.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not AB1.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>AB+</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{AB1.unit}}</strong> units</div>{% if not AB1.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not A2.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>A-</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{A2.unit}}</strong> units</div>{% if not A2.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not B2.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>B-</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{B2.unit}}</strong> units</div>{% if not B2.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not O2.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>O-</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{O2.unit}}</strong> units</div>{% if not O2.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+                <article class="blood-card {% if not AB2.unit %}out-of-stock{% endif %}"><div class="blood-card-top"><h3>AB-</h3><i class="fas fa-tint blood-icon"></i></div><div class="blood-unit"><strong>{{AB2.unit}}</strong> units</div>{% if not AB2.unit %}<div class="stock-status"><i class="fas fa-exclamation-circle"></i> Restock needed</div>{% endif %}</article>
+            </div>
+        </section>
+        <section class="summary-section">
+            <div class="section-label"><i class="fas fa-chart-line"></i> Network summary</div>
+            <div class="summary-grid">
+                <article class="summary-card"><div class="summary-icon"><i class="fas fa-users"></i></div><div><p>Total Donors</p><strong>{{totaldonors}}</strong></div></article>
+                <article class="summary-card"><div class="summary-icon"><i class="fas fa-spinner"></i></div><div><p>Total Requests</p><strong>{{totalrequest}}</strong></div></article>
+                <article class="summary-card"><div class="summary-icon"><i class="far fa-check-circle"></i></div><div><p>Approved Requests</p><strong>{{totalapprovedrequest}}</strong></div></article>
+                <article class="summary-card"><div class="summary-icon"><i class="fas fa-tint"></i></div><div><p>Total Blood Units</p><strong>{{totalbloodunit|default:0}} ml</strong></div></article>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}

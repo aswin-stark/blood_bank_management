@@ -1,0 +1,43 @@
+{% extends 'blood/adminbase.html' %}
+{% load static %}
+{% block content %}
+<div class="dashboard-main donor-page">
+    {% include "blood/login_cells.html" %}
+    <div class="dashboard-content">
+        <div class="dashboard-heading">
+            <div>
+                <div class="dashboard-kicker">Life-saving network</div>
+                <h1>Donor details</h1>
+                <p>Know the people who keep the blood supply moving.</p>
+            </div>
+            <div class="dashboard-pulse"><i class="fas fa-circle"></i> Donor records live</div>
+        </div>
+
+        {% if donors %}
+        <section class="donor-directory">
+            <div class="donor-summary"><span><i class="fas fa-heart"></i> Registered donors</span><strong>{{donors|length}} profiles</strong></div>
+            <div class="donor-grid">
+            {% for donor in donors %}
+            <article class="donor-card">
+                <div class="donor-card-head">
+                    {% if donor.profile_pic %}<img class="donor-photo" src="{{ donor.profile_pic.url }}" alt="{{donor.get_name}} profile">{% else %}<span class="donor-photo donor-photo-empty"><i class="fas fa-user"></i></span>{% endif %}
+                    <div><h2 class="donor-name">{{donor.get_name}}</h2><span class="donor-record"><i class="fas fa-id-card"></i> Registered donor</span></div>
+                    <span class="donor-ready {% if not donor.user.is_active %}donor-inactive{% endif %}"><i class="fas fa-heartbeat"></i> {% if donor.user.is_active %}Active{% else %}Not active{% endif %}</span>
+                </div>
+                <div class="donor-card-body">
+                    <div class="donor-detail"><span>Blood group</span><strong class="donor-blood">{{donor.bloodgroup}}</strong></div>
+                    <div class="donor-detail"><span>Mobile</span><strong>{{donor.mobile}}</strong></div>
+                    <div class="donor-detail"><span>Address</span><strong>{{donor.address}}</strong></div>
+                    <div class="donor-detail"><span>Donation role</span><strong>Community donor</strong></div>
+                </div>
+                <div class="donor-card-actions"><a class="donor-view" href="{% url 'donor-detail' donor.id %}"><i class="fas fa-eye"></i> View</a><a class="donor-edit" href="{% url 'update-donor' donor.id %}"><i class="fas fa-edit"></i> Edit profile</a><a class="donor-delete" href="{% url 'delete-donor' donor.id %}"><i class="fas fa-trash-alt"></i> Delete</a></div>
+            </article>
+            {% endfor %}
+            </div>
+        </section>
+        {% else %}
+        <section class="donor-directory empty-donors"><i class="fas fa-user-plus"></i><h2>No donor profiles</h2><p>New donor registrations will appear here.</p></section>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
