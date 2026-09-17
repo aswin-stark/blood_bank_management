@@ -145,9 +145,8 @@ LOGIN_REDIRECT_URL='/afterlogin'
 
 # EmailJS configuration. Replace each placeholder with the value from EmailJS.
 EMAILJS_API_URL = 'https://api.emailjs.com/api/v1.0/email/send'
-EMAILJS_SERVICE_ID = 'service_42f1ixg'
-EMAILJS_TEMPLATE_ID = 'template_9i4ruzv'
-EMAILJS_PUBLIC_KEY = 'r5FpOPf55sLnSKlsy'
-# Optional but recommended for server-side Django requests. Copy it from EmailJS Account > Security.
-EMAILJS_PRIVATE_KEY = 'fK_83UHJQ3GkrswGxYBkx'
-EMAILJS_REPLY_TO_EMAIL = 'aswinstark007@gmail.com'
+EMAILJS_SERVICE_ID = os.environ.get('EMAILJS_SERVICE_ID')
+EMAILJS_TEMPLATE_ID = os.environ.get('EMAILJS_TEMPLATE_ID')
+EMAILJS_PUBLIC_KEY = os.environ.get('EMAILJS_PUBLIC_KEY')
+EMAILJS_PRIVATE_KEY = os.environ.get('EMAILJS_PRIVATE_KEY')
+EMAILJS_REPLY_TO_EMAIL = os.environ.get('EMAILJS_REPLY_TO_EMAIL')
